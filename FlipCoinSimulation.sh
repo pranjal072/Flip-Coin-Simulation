@@ -34,5 +34,32 @@ elif [ $diff -lt 0 ]
 then
 	echo "Tails won by $(($diff*-1)) points"
 else
-	echo "ITS A TIE !!"
+	echo "ITS A TIE !! - TIEBREAKER INITIATED :"
+	diffmod=0
+	while [ $diffmod -ne 2 ]
+	do
+		coin=$((RANDOM%2))
+   	if [ $coin -eq 0 ]
+   	then
+      	((coinSide[Heads]++))
+   	else
+      	((coinSide[Tails]++))
+   	fi
+		diff=$(( ${coinSide[Heads]}-${coinSide[Tails]} ))
+		if [ $diff -lt 0 ]
+		then
+			diffmod=$(($diff*-1))
+		fi
+	done
+	echo "NEW RESULT :"
+	for side in ${!coinSide[@]}
+	do
+   	echo "$side won ${coinSide[$side]} times"
+	done
+	if [ $diff -gt 0 ]
+	then
+   	echo "Heads won by $diff points"
+	else
+   	echo "Tails won by $(($diff*-1)) points"
+	fi
 fi
